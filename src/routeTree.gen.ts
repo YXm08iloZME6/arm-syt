@@ -19,7 +19,6 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AuthAppVacationsRouteImport } from './routes/_auth/app/vacations'
 import { Route as AuthAppTripsRouteImport } from './routes/_auth/app/trips'
 import { Route as AuthAppReportsRouteImport } from './routes/_auth/app/reports'
-import { Route as AuthAppOrdersRouteImport } from './routes/_auth/app/orders'
 import { Route as AuthAppHomeRouteImport } from './routes/_auth/app/home'
 import { Route as AuthAppEmployesRouteImport } from './routes/_auth/app/employes'
 import { Route as AuthAppContractsRouteImport } from './routes/_auth/app/contracts'
@@ -72,11 +71,6 @@ const AuthAppReportsRoute = AuthAppReportsRouteImport.update({
   path: '/reports',
   getParentRoute: () => AuthAppRouteRoute,
 } as any)
-const AuthAppOrdersRoute = AuthAppOrdersRouteImport.update({
-  id: '/orders',
-  path: '/orders',
-  getParentRoute: () => AuthAppRouteRoute,
-} as any)
 const AuthAppHomeRoute = AuthAppHomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -101,7 +95,6 @@ export interface FileRoutesByFullPath {
   '/app/contracts': typeof AuthAppContractsRoute
   '/app/employes': typeof AuthAppEmployesRoute
   '/app/home': typeof AuthAppHomeRoute
-  '/app/orders': typeof AuthAppOrdersRoute
   '/app/reports': typeof AuthAppReportsRoute
   '/app/trips': typeof AuthAppTripsRoute
   '/app/vacations': typeof AuthAppVacationsRoute
@@ -115,7 +108,6 @@ export interface FileRoutesByTo {
   '/app/contracts': typeof AuthAppContractsRoute
   '/app/employes': typeof AuthAppEmployesRoute
   '/app/home': typeof AuthAppHomeRoute
-  '/app/orders': typeof AuthAppOrdersRoute
   '/app/reports': typeof AuthAppReportsRoute
   '/app/trips': typeof AuthAppTripsRoute
   '/app/vacations': typeof AuthAppVacationsRoute
@@ -132,7 +124,6 @@ export interface FileRoutesById {
   '/_auth/app/contracts': typeof AuthAppContractsRoute
   '/_auth/app/employes': typeof AuthAppEmployesRoute
   '/_auth/app/home': typeof AuthAppHomeRoute
-  '/_auth/app/orders': typeof AuthAppOrdersRoute
   '/_auth/app/reports': typeof AuthAppReportsRoute
   '/_auth/app/trips': typeof AuthAppTripsRoute
   '/_auth/app/vacations': typeof AuthAppVacationsRoute
@@ -148,7 +139,6 @@ export interface FileRouteTypes {
     | '/app/contracts'
     | '/app/employes'
     | '/app/home'
-    | '/app/orders'
     | '/app/reports'
     | '/app/trips'
     | '/app/vacations'
@@ -162,7 +152,6 @@ export interface FileRouteTypes {
     | '/app/contracts'
     | '/app/employes'
     | '/app/home'
-    | '/app/orders'
     | '/app/reports'
     | '/app/trips'
     | '/app/vacations'
@@ -178,7 +167,6 @@ export interface FileRouteTypes {
     | '/_auth/app/contracts'
     | '/_auth/app/employes'
     | '/_auth/app/home'
-    | '/_auth/app/orders'
     | '/_auth/app/reports'
     | '/_auth/app/trips'
     | '/_auth/app/vacations'
@@ -264,13 +252,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthAppReportsRouteImport
       parentRoute: typeof AuthAppRouteRoute
     }
-    '/_auth/app/orders': {
-      id: '/_auth/app/orders'
-      path: '/orders'
-      fullPath: '/app/orders'
-      preLoaderRoute: typeof AuthAppOrdersRouteImport
-      parentRoute: typeof AuthAppRouteRoute
-    }
     '/_auth/app/home': {
       id: '/_auth/app/home'
       path: '/home'
@@ -299,7 +280,6 @@ interface AuthAppRouteRouteChildren {
   AuthAppContractsRoute: typeof AuthAppContractsRoute
   AuthAppEmployesRoute: typeof AuthAppEmployesRoute
   AuthAppHomeRoute: typeof AuthAppHomeRoute
-  AuthAppOrdersRoute: typeof AuthAppOrdersRoute
   AuthAppReportsRoute: typeof AuthAppReportsRoute
   AuthAppTripsRoute: typeof AuthAppTripsRoute
   AuthAppVacationsRoute: typeof AuthAppVacationsRoute
@@ -309,7 +289,6 @@ const AuthAppRouteRouteChildren: AuthAppRouteRouteChildren = {
   AuthAppContractsRoute: AuthAppContractsRoute,
   AuthAppEmployesRoute: AuthAppEmployesRoute,
   AuthAppHomeRoute: AuthAppHomeRoute,
-  AuthAppOrdersRoute: AuthAppOrdersRoute,
   AuthAppReportsRoute: AuthAppReportsRoute,
   AuthAppTripsRoute: AuthAppTripsRoute,
   AuthAppVacationsRoute: AuthAppVacationsRoute,

@@ -1,15 +1,22 @@
 import { Link } from "@tanstack/react-router";
 import { Button, buttonVariants } from "./ui/button";
 import { authClient } from "@/lib/auth/authClient";
+import {
+  LayoutDashboard,
+  Users,
+  Briefcase,
+  Calendar,
+  Plane,
+  ChartBar,
+} from "lucide-react";
 
 const navItems = [
-  { label: "Главная", to: "/app/home" },
-  { label: "Сотрудники", to: "/app/employes" },
-  { label: "Приказы", to: "/app/orders" },
-  { label: "Договоры", to: "/app/contracts" },
-  { label: "Отпуска", to: "/app/vacations" },
-  { label: "Командировки", to: "/app/trips" },
-  { label: "Отчеты", to: "/app/reports" },
+  { label: "Главная", to: "/app/home", icon: LayoutDashboard },
+  { label: "Сотрудники", to: "/app/employes", icon: Users },
+  { label: "Договоры", to: "/app/contracts", icon: Briefcase },
+  { label: "Отпуска", to: "/app/vacations", icon: Calendar },
+  { label: "Командировки", to: "/app/trips", icon: Plane },
+  { label: "Отчеты", to: "/app/reports", icon: ChartBar },
 ];
 
 export default function Header() {
@@ -30,6 +37,7 @@ export default function Header() {
                 className: buttonVariants({ variant: "secondary" }),
               }}
             >
+              <item.icon />
               {item.label}
             </Link>
           </Button>
