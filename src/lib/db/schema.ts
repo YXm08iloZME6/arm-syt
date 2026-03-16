@@ -1,1 +1,2 @@
-export * from "@/lib/db/migrations/auth.migration";
+export * from "@/lib/db/tables/auth.migration";
+export * from "@/lib/db/tables/main";

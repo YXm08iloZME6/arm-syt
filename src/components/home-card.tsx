@@ -12,16 +12,11 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 import { Link } from "@tanstack/react-router";
-
-type Data = {
-  title: string;
-  info: string;
-  date: string;
-};
+import { type Order } from "@/lib/functions/orders";
 
 type HomeCardProps = {
   cardTitle: string;
-  data: Array<Data>;
+  data: Array<Order>;
   link: string;
   linkName: string;
 };
@@ -33,14 +28,17 @@ export function HomeCard({ cardTitle, data, link, linkName }: HomeCardProps) {
         <CardTitle>{cardTitle}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        {data.map((d) => (
-          <Item variant={"muted"}>
+        {data.map((i) => (
+          <Item key={i.id} variant={"muted"}>
             <ItemContent>
-              <ItemTitle>{d.title}</ItemTitle>
-              <ItemDescription>{d.info}</ItemDescription>
+              <ItemTitle>{i.orderType.name}</ItemTitle>
+              <ItemDescription>
+                {i.employee?.lastName} {i.employee?.firstName}{" "}
+                {i.employee?.surname}
+              </ItemDescription>
             </ItemContent>
             <ItemContent className="flex-none text-center">
-              <ItemDescription>{d.date}</ItemDescription>
+              <ItemDescription>{i.orderDate}</ItemDescription>
             </ItemContent>
           </Item>
         ))}

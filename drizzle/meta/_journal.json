@@ -8,6 +8,13 @@
       "when": 1771313843413,
       "tag": "0000_parched_venus",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1773420261958,
+      "tag": "0001_nostalgic_hellion",
+      "breakpoints": true
     }
   ]
 }
