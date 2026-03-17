@@ -55,10 +55,10 @@ async function main() {
         lastName: "Иванов",
         surname: "Иванович",
         email: "ivanov@company.com",
+        phoneNumber: "+7 (495) 123-45-67",
         admissionDate: new Date().toISOString(),
         departmentId: depts[0].id,
         jobTitleId: jobs[0].id,
-        phoneNumber: "+7 (495) 123-45-67",
       },
       {
         firstName: "Мария",
@@ -190,6 +190,12 @@ async function main() {
       issueDate: new Date().toISOString(),
       status: "Активный",
       employeeId: empls[5].id,
+    },
+    {
+      contractNumber: "2026/018",
+      issueDate: new Date().toISOString(),
+      status: "Истёк",
+      employeeId: empls[6].id,
     },
   ]);
 

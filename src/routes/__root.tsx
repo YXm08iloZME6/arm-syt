@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-router";
 import Header from "@/components/header";
 import { QueryClient } from "@tanstack/react-query";
+import { Toaster } from "@/components/ui/sonner";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import appCss from "../styles.css?url";
@@ -42,11 +43,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <ThemeProvider defaultTheme="dark">
+        <ThemeProvider defaultTheme="light">
           <div id="root-content">
             <Header />
             {children}
           </div>
+          <Toaster />
         </ThemeProvider>
 
         <Scripts />

@@ -1,24 +1,35 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { employeesQueryOptions } from "@/lib/functions/employees";
+import {
+  employeesQueryOptions,
+  departmentsQueryOptions,
+  jobTitlesQueryOptions,
+} from "@/lib/functions/employees";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   columns,
   type TableEmployee,
 } from "@/components/employeeTable/columns";
 import { DataTable } from "@/components/employeeTable/data-table";
+import { EmployeeForm } from "@/components/employee-form";
 
 export const Route = createFileRoute("/_auth/app/employes")({
   component: RouteComponent,
   loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(employeesQueryOptions());
+    await Promise.all([
+      context.queryClient.ensureQueryData(employeesQueryOptions()),
+      context.queryClient.ensureQueryData(departmentsQueryOptions()),
+      context.queryClient.ensureQueryData(jobTitlesQueryOptions()),
+    ]);
   },
 });
 
 function RouteComponent() {
-  const { data, isLoading } = useSuspenseQuery(employeesQueryOptions());
+  const { data: employees } = useSuspenseQuery(employeesQueryOptions());
+  const { data: departments } = useSuspenseQuery(departmentsQueryOptions());
+  const { data: jobTitles } = useSuspenseQuery(jobTitlesQueryOptions());
   const tableData: TableEmployee[] = [];
 
-  data.forEach((entry) => {
+  employees.forEach((entry) => {
     tableData.push({
       name: `${entry.lastName} ${entry.firstName} ${entry.surname}`,
       jobTitle: entry.jobTitle.title,
@@ -40,6 +51,7 @@ function RouteComponent() {
       <div>
         <DataTable data={tableData} columns={columns} />
       </div>
+      <EmployeeForm jobValues={jobTitles} depsValues={departments} />
     </div>
   );
 }

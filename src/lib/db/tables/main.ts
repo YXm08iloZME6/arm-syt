@@ -8,6 +8,8 @@ import {
   pgEnum,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import { createInsertSchema } from "drizzle-zod";
+import * as z from "zod";
 
 export const entityTypeEnum = pgEnum("entity_type", [
   "Приказы",
@@ -62,6 +64,14 @@ export const employees = pgTable("employees", {
   departmentId: integer("department_id")
     .notNull()
     .references(() => departments.id),
+});
+
+export const employeeInsertSchema = createInsertSchema(employees, {
+  surname: z.string(),
+  email: z.string(),
+  phoneNumber: z.string(),
+}).omit({
+  id: true,
 });
 
 export const contracts = pgTable("contracts", {
