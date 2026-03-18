@@ -158,3 +158,10 @@ export const constractsRelations = relations(contracts, ({ one }) => ({
     references: [employees.id],
   }),
 }));
+
+export const vacationsRelations = relations(vacations, ({ one }) => ({
+  employee: one(employees, {
+    fields: [vacations.employeeId],
+    references: [employees.id],
+  }),
+}));

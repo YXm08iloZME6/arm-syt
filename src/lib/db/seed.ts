@@ -199,6 +199,39 @@ async function main() {
     },
   ]);
 
+  await db.insert(schema.vacations).values([
+    {
+      employeeId: empls[0].id,
+      startDate: new Date("2024-12-23").toISOString(),
+      endDate: new Date("2025-01-10").toISOString(),
+      vacationType: "Оплачиваемый",
+    },
+    {
+      employeeId: empls[1].id,
+      startDate: new Date("2025-01-15").toISOString(),
+      endDate: new Date("2025-01-29").toISOString(),
+      vacationType: "Оплачиваемый",
+    },
+    {
+      employeeId: empls[3].id,
+      startDate: new Date("2024-11-01").toISOString(),
+      endDate: new Date("2024-11-10").toISOString(),
+      vacationType: "Без сохранения ЗП",
+    },
+    {
+      employeeId: empls[4].id,
+      startDate: new Date("2025-02-01").toISOString(),
+      endDate: new Date("2025-02-14").toISOString(),
+      vacationType: "Оплачиваемый",
+    },
+    {
+      employeeId: empls[5].id,
+      startDate: new Date("2025-01-20").toISOString(),
+      endDate: new Date("2025-02-03").toISOString(),
+      vacationType: "Оплачиваемый",
+    },
+  ]);
+
   console.log("Seed finished successfully!");
   process.exit(0);
 }
