@@ -1,8 +1,10 @@
 import { db } from "@/lib/db";
+import { eq } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
 import { queryOptions } from "@tanstack/react-query";
 import { employeeInsertSchema } from "@/lib/db/tables/main";
 import * as schema from "@/lib/db/tables/main";
+import * as z from "zod";
 
 const getEmployees = createServerFn({ method: "GET" }).handler(async () => {
   const employees = db.query.employees.findMany({
@@ -14,6 +16,31 @@ const getEmployees = createServerFn({ method: "GET" }).handler(async () => {
   return employees;
 });
 
+const getEmployee = createServerFn({ method: "GET" })
+  .inputValidator(z.object({ id: z.number() }))
+  .handler(async ({ data }) => {
+    const employee = db.query.employees.findFirst({
+      where: eq(schema.employees.id, data.id),
+      with: {
+        department: true,
+        jobTitle: true,
+      },
+    });
+    return employee;
+  });
+
+export const employeeQueryOptions = (id: number) =>
+  queryOptions({
+    queryKey: ["employee", id],
+    queryFn: () => getEmployee({ data: { id } }),
+  });
+
+export const employeesQueryOptions = () =>
+  queryOptions({
+    queryKey: ["employees"],
+    queryFn: () => getEmployees(),
+  });
+
 export type Employees = Awaited<ReturnType<typeof getEmployees>>;
 export type Employee = Employees[number];
 
@@ -23,10 +50,14 @@ export const addEmployee = createServerFn({ method: "POST" })
     await db.insert(schema.employees).values(data);
   });
 
-export const employeesQueryOptions = () =>
-  queryOptions({
-    queryKey: ["employees"],
-    queryFn: () => getEmployees(),
+export const deleteEmployee = createServerFn({ method: "POST" })
+  .inputValidator(
+    z.object({
+      id: z.number(),
+    }),
+  )
+  .handler(async ({ data }) => {
+    await db.delete(schema.employees).where(eq(schema.employees.id, data.id));
   });
 
 const getDepartments = createServerFn({ method: "GET" }).handler(async () => {

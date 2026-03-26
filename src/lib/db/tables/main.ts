@@ -74,6 +74,8 @@ export const employeeInsertSchema = createInsertSchema(employees, {
   id: true,
 });
 
+export type EmployeeInsert = z.infer<typeof employeeInsertSchema>;
+
 export const contracts = pgTable("contracts", {
   id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
   employeeId: integer("employee_id").references(() => employees.id),
@@ -140,7 +142,7 @@ export const ordersRelations = relations(orders, ({ one }) => ({
   }),
 }));
 
-export const employeesRelations = relations(employees, ({ one }) => ({
+export const employeesRelations = relations(employees, ({ one, many }) => ({
   jobTitle: one(jobTitles, {
     fields: [employees.jobTitleId],
     references: [jobTitles.id],
@@ -162,6 +164,20 @@ export const constractsRelations = relations(contracts, ({ one }) => ({
 export const vacationsRelations = relations(vacations, ({ one }) => ({
   employee: one(employees, {
     fields: [vacations.employeeId],
+    references: [employees.id],
+  }),
+}));
+
+export const reportsRelations = relations(reports, ({ one }) => ({
+  employee: one(employees, {
+    fields: [reports.employeeId],
+    references: [employees.id],
+  }),
+}));
+
+export const tripsRelations = relations(businessTrips, ({ one }) => ({
+  employee: one(employees, {
+    fields: [businessTrips.employeeId],
     references: [employees.id],
   }),
 }));

@@ -2,8 +2,10 @@ import { useForm } from "@tanstack/react-form-start";
 import { type Departments, type JobTitles } from "@/lib/functions/employees";
 import { Button } from "@/components/ui/button";
 import { ru } from "react-day-picker/locale";
-import { addEmployee } from "@/lib/functions/employees";
-import { employeeInsertSchema } from "@/lib/db/tables/main";
+import {
+  employeeInsertSchema,
+  type EmployeeInsert,
+} from "@/lib/db/tables/main";
 import { format } from "date-fns";
 import {
   Dialog,
@@ -34,9 +36,14 @@ import { Calendar } from "./ui/calendar";
 type EmployeeFormProps = {
   jobValues: JobTitles;
   depsValues: Departments;
+  handleAdd: (data: EmployeeInsert) => void;
 };
 
-export function EmployeeForm({ jobValues, depsValues }: EmployeeFormProps) {
+export function EmployeeForm({
+  jobValues,
+  depsValues,
+  handleAdd,
+}: EmployeeFormProps) {
   const form = useForm({
     defaultValues: {
       firstName: "",
@@ -52,7 +59,7 @@ export function EmployeeForm({ jobValues, depsValues }: EmployeeFormProps) {
       onBlur: employeeInsertSchema,
     },
     onSubmit: async ({ value }) => {
-      await addEmployee({ data: value });
+      handleAdd(value);
     },
   });
 

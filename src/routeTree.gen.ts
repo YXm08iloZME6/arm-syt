@@ -23,6 +23,7 @@ import { Route as AuthAppOrdersRouteImport } from './routes/_auth/app/orders'
 import { Route as AuthAppHomeRouteImport } from './routes/_auth/app/home'
 import { Route as AuthAppEmployesRouteImport } from './routes/_auth/app/employes'
 import { Route as AuthAppContractsRouteImport } from './routes/_auth/app/contracts'
+import { Route as AuthAppEmployeeIdRouteImport } from './routes/_auth/app/employee.$id'
 
 const GuestRouteRoute = GuestRouteRouteImport.update({
   id: '/_guest',
@@ -92,6 +93,11 @@ const AuthAppContractsRoute = AuthAppContractsRouteImport.update({
   path: '/contracts',
   getParentRoute: () => AuthAppRouteRoute,
 } as any)
+const AuthAppEmployeeIdRoute = AuthAppEmployeeIdRouteImport.update({
+  id: '/employee/$id',
+  path: '/employee/$id',
+  getParentRoute: () => AuthAppRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/app/trips': typeof AuthAppTripsRoute
   '/app/vacations': typeof AuthAppVacationsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/app/employee/$id': typeof AuthAppEmployeeIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByTo {
   '/app/trips': typeof AuthAppTripsRoute
   '/app/vacations': typeof AuthAppVacationsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/app/employee/$id': typeof AuthAppEmployeeIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -137,6 +145,7 @@ export interface FileRoutesById {
   '/_auth/app/trips': typeof AuthAppTripsRoute
   '/_auth/app/vacations': typeof AuthAppVacationsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/_auth/app/employee/$id': typeof AuthAppEmployeeIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -153,6 +162,7 @@ export interface FileRouteTypes {
     | '/app/trips'
     | '/app/vacations'
     | '/api/auth/$'
+    | '/app/employee/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -167,6 +177,7 @@ export interface FileRouteTypes {
     | '/app/trips'
     | '/app/vacations'
     | '/api/auth/$'
+    | '/app/employee/$id'
   id:
     | '__root__'
     | '/'
@@ -183,6 +194,7 @@ export interface FileRouteTypes {
     | '/_auth/app/trips'
     | '/_auth/app/vacations'
     | '/api/auth/$'
+    | '/_auth/app/employee/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -292,6 +304,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthAppContractsRouteImport
       parentRoute: typeof AuthAppRouteRoute
     }
+    '/_auth/app/employee/$id': {
+      id: '/_auth/app/employee/$id'
+      path: '/employee/$id'
+      fullPath: '/app/employee/$id'
+      preLoaderRoute: typeof AuthAppEmployeeIdRouteImport
+      parentRoute: typeof AuthAppRouteRoute
+    }
   }
 }
 
@@ -303,6 +322,7 @@ interface AuthAppRouteRouteChildren {
   AuthAppReportsRoute: typeof AuthAppReportsRoute
   AuthAppTripsRoute: typeof AuthAppTripsRoute
   AuthAppVacationsRoute: typeof AuthAppVacationsRoute
+  AuthAppEmployeeIdRoute: typeof AuthAppEmployeeIdRoute
 }
 
 const AuthAppRouteRouteChildren: AuthAppRouteRouteChildren = {
@@ -313,6 +333,7 @@ const AuthAppRouteRouteChildren: AuthAppRouteRouteChildren = {
   AuthAppReportsRoute: AuthAppReportsRoute,
   AuthAppTripsRoute: AuthAppTripsRoute,
   AuthAppVacationsRoute: AuthAppVacationsRoute,
+  AuthAppEmployeeIdRoute: AuthAppEmployeeIdRoute,
 }
 
 const AuthAppRouteRouteWithChildren = AuthAppRouteRoute._addFileChildren(

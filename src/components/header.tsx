@@ -30,7 +30,7 @@ export default function Header() {
         </Link>
 
         {navItems.map((item) => (
-          <Button asChild variant="ghost">
+          <Button asChild variant="ghost" id={item.to}>
             <Link
               to={item.to}
               activeProps={{

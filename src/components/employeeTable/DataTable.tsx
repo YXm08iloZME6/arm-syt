@@ -1,7 +1,6 @@
-"use client";
-
 import {
   type ColumnDef,
+  type RowData,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -16,19 +15,30 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+declare module "@tanstack/react-table" {
+  interface TableMeta<TData extends RowData> {
+    deleteRow: (rowIndex: number) => void;
+  }
+}
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  handleDelete: (id: number) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  handleDelete,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    meta: {
+      deleteRow: handleDelete,
+    },
   });
 
   return (

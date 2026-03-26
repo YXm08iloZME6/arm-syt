@@ -3,14 +3,17 @@ import {
   employeesQueryOptions,
   departmentsQueryOptions,
   jobTitlesQueryOptions,
+  addEmployee,
 } from "@/lib/functions/employees";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useMutation } from "@tanstack/react-query";
 import {
   columns,
   type TableEmployee,
 } from "@/components/employeeTable/columns";
-import { DataTable } from "@/components/employeeTable/data-table";
-import { EmployeeForm } from "@/components/employee-form";
+import { DataTable } from "@/components/employeeTable/DataTable";
+import { EmployeeForm } from "@/components/EmployeeForm";
+import { deleteEmployee } from "@/lib/functions/employees";
+import { type EmployeeInsert } from "@/lib/db/tables/main";
 
 export const Route = createFileRoute("/_auth/app/employes")({
   component: RouteComponent,
@@ -24,6 +27,42 @@ export const Route = createFileRoute("/_auth/app/employes")({
 });
 
 function RouteComponent() {
+  const context = Route.useRouteContext();
+
+  const { mutate: addEmp } = useMutation({
+    mutationFn: (data: EmployeeInsert) => addEmployee({ data }),
+    onMutate: async (id) => {
+      await context.queryClient.cancelQueries({ queryKey: ["employees"] });
+      const previousEmployees = context.queryClient.getQueryData(["employees"]);
+
+      context.queryClient.setQueryData(["employees"], (old: any) =>
+        old?.filter((emp: any) => emp.id !== id),
+      );
+
+      return { previousEmployees };
+    },
+    onSettled: () => {
+      context.queryClient.invalidateQueries({ queryKey: ["employees"] });
+    },
+  });
+
+  const { mutate: deleteEmp } = useMutation({
+    mutationFn: (id: number) => deleteEmployee({ data: { id } }),
+    onMutate: async (id) => {
+      await context.queryClient.cancelQueries({ queryKey: ["employees"] });
+      const previousEmployees = context.queryClient.getQueryData(["employees"]);
+
+      context.queryClient.setQueryData(["employees"], (old: any) =>
+        old?.filter((emp: any) => emp.id !== id),
+      );
+
+      return { previousEmployees };
+    },
+    onSettled: () => {
+      context.queryClient.invalidateQueries({ queryKey: ["employees"] });
+    },
+  });
+
   const { data: employees } = useSuspenseQuery(employeesQueryOptions());
   const { data: departments } = useSuspenseQuery(departmentsQueryOptions());
   const { data: jobTitles } = useSuspenseQuery(jobTitlesQueryOptions());
@@ -31,6 +70,7 @@ function RouteComponent() {
 
   employees.forEach((entry) => {
     tableData.push({
+      id: entry.id,
       name: `${entry.lastName} ${entry.firstName} ${entry.surname}`,
       jobTitle: entry.jobTitle.title,
       department: entry.department.title,
@@ -49,9 +89,17 @@ function RouteComponent() {
         Управление данными о сотрудниках организации
       </p>
       <div>
-        <DataTable data={tableData} columns={columns} />
+        <DataTable
+          handleDelete={deleteEmp}
+          data={tableData}
+          columns={columns}
+        />
       </div>
-      <EmployeeForm jobValues={jobTitles} depsValues={departments} />
+      <EmployeeForm
+        handleAdd={addEmp}
+        jobValues={jobTitles}
+        depsValues={departments}
+      />
     </div>
   );
 }
